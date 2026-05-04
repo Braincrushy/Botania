@@ -42,18 +42,18 @@ public class MedumoneBlockEntity extends FunctionalFlowerBlockEntity {
 				livingEntity -> livingEntity.isAlive() && !(livingEntity instanceof Player)
 						&& livingEntity.canBeAffected(testInstance));
 
+		boolean did = false;
 		for (LivingEntity entity : entities) {
 			entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 100));
 			addMana(-1);
+			did = true;
 			if (getMana() == 0) {
-				return;
+				break;
 			}
 		}
-	}
-
-	@Override
-	public boolean isOvergrowthAffected() {
-		return false;
+		if (did) {
+			sync();
+		}
 	}
 
 	@Override

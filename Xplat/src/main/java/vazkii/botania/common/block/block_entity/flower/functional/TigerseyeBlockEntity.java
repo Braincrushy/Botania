@@ -51,7 +51,7 @@ public class TigerseyeBlockEntity extends FunctionalFlowerBlockEntity {
 
 		for (Creeper entity : getLevel().getEntitiesOfClass(Creeper.class,
 				new AABB(getEffectivePos()).inflate(RANGE, RANGE_Y, RANGE), Creeper::isAlive)) {
-			((CreeperAccessor) entity).setCurrentFuseTime(2);
+			((CreeperAccessor) entity).botania_setSwell(2);
 			entity.setTarget(null);
 
 			if (pacifyCreeper(entity)) {
@@ -67,11 +67,6 @@ public class TigerseyeBlockEntity extends FunctionalFlowerBlockEntity {
 		}
 	}
 
-	@Override
-	public boolean isOvergrowthAffected() {
-		return false;
-	}
-
 	public static void pacifyAfterLoad(Entity entity, ServerLevel level) {
 		if (entity instanceof Creeper creeper && XplatAbstractions.INSTANCE.tigersEyeComponent(creeper).isPacified()) {
 			pacifyCreeper(creeper);
@@ -80,7 +75,7 @@ public class TigerseyeBlockEntity extends FunctionalFlowerBlockEntity {
 
 	private static boolean pacifyCreeper(Creeper creeper) {
 		boolean did = false;
-		GoalSelector goalSelector = ((MobAccessor) creeper).getGoalSelector();
+		GoalSelector goalSelector = ((MobAccessor) creeper).botania_getGoalSelector();
 		Set<WrappedGoal> goals = goalSelector.getAvailableGoals();
 		for (var goal : goals) {
 			Goal wrapped = goal.getGoal();
@@ -91,11 +86,11 @@ public class TigerseyeBlockEntity extends FunctionalFlowerBlockEntity {
 			}
 		}
 
-		GoalSelector targetSelector = ((MobAccessor) creeper).getTargetSelector();
+		GoalSelector targetSelector = ((MobAccessor) creeper).botania_getTargetSelector();
 		for (var iterator = targetSelector.getAvailableGoals().iterator(); iterator.hasNext();) {
 			WrappedGoal pg = iterator.next();
 			if (pg.getGoal() instanceof NearestAttackableTargetGoalAccessor targetGoal
-					&& targetGoal.getTargetClass() == Player.class) {
+					&& targetGoal.botania_getTargetType() == Player.class) {
 				iterator.remove();
 				did = true;
 			}

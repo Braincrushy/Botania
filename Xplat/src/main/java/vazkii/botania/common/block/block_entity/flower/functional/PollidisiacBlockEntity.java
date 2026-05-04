@@ -66,11 +66,6 @@ public class PollidisiacBlockEntity extends FunctionalFlowerBlockEntity implemen
 		}
 	}
 
-	@Override
-	public boolean isOvergrowthAffected() {
-		return false;
-	}
-
 	/**
 	 * Finds items around flower's actual position.
 	 */
@@ -99,6 +94,7 @@ public class PollidisiacBlockEntity extends FunctionalFlowerBlockEntity implemen
 		// feed adults first, then babies, youngest to oldest
 		animals.sort(Comparator.comparing(Animal::isBaby).thenComparingInt(animal -> Math.min(animal.getAge(), 0)));
 
+		boolean did = false;
 		for (Animal animal : animals) {
 			// Note: Empty item stacks are implicitly excluded in Animal::isFood and ItemStack::is(TagKey)
 			if (animal.getAge() == 0 && !animal.isInLove() || animal.getAge() < -600 && -animal.getAge() % 100 == 0) {
@@ -107,6 +103,7 @@ public class PollidisiacBlockEntity extends FunctionalFlowerBlockEntity implemen
 						continue;
 					}
 					consumeFoodItemAndMana(item);
+					did = true;
 
 					if (animal.isBaby()) {
 						animal.ageUp(AgeableMob.getSpeedUpSecondsWhenFeeding(-animal.getAge()), true);
@@ -134,9 +131,10 @@ public class PollidisiacBlockEntity extends FunctionalFlowerBlockEntity implemen
 						continue;
 					}
 					consumeFoodItemAndMana(item);
+					did = true;
 
 					MushroomCowAccessor cowAccessor = (MushroomCowAccessor) animal;
-					cowAccessor.setStewEffects(effectHolder.getSuspiciousEffects());
+					cowAccessor.botania_setStewEffects(effectHolder.getSuspiciousEffects());
 					animal.playSound(SoundEvents.MOOSHROOM_EAT, 2.0F, 1.0F);
 					break;
 				}
@@ -145,6 +143,9 @@ public class PollidisiacBlockEntity extends FunctionalFlowerBlockEntity implemen
 					break;
 				}
 			}
+		}
+		if (did) {
+			sync();
 		}
 	}
 
@@ -156,7 +157,7 @@ public class PollidisiacBlockEntity extends FunctionalFlowerBlockEntity implemen
 	private static boolean isBrownMooshroomWithoutEffect(Animal animal) {
 		if (animal instanceof MushroomCow mushroomCow && mushroomCow.getVariant() == MushroomCow.MushroomType.BROWN) {
 			MushroomCowAccessor cowAccessor = (MushroomCowAccessor) animal;
-			return cowAccessor.getStewEffects() == null;
+			return cowAccessor.botania_getStewEffects() == null;
 		}
 		return false;
 	}

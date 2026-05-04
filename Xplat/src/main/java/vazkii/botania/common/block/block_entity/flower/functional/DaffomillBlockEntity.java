@@ -61,6 +61,7 @@ public class DaffomillBlockEntity extends FunctionalFlowerBlockEntity implements
 		if (windTicks == 0 && getMana() > 0) {
 			windTicks = 20;
 			addMana(-1);
+			sync();
 		}
 
 		if (windTicks > 0) {
@@ -69,7 +70,7 @@ public class DaffomillBlockEntity extends FunctionalFlowerBlockEntity implements
 			if (axis != null) {
 				List<ItemEntity> items = getLevel().getEntitiesOfClass(ItemEntity.class, axis,
 						itemEntity -> DelayHelper.canInteractWithImmediate(this, itemEntity));
-				double v = overgrowth ? 0.1 : 0.05;
+				double v = 0.05;
 				for (ItemEntity item : items) {
 					item.setDeltaMovement(
 							item.getDeltaMovement().x() + orientation.getStepX() * v,

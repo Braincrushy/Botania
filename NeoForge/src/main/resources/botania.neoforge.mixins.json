@@ -7,14 +7,17 @@
   "mixins": [
     "AbstractFurnaceBlockEntityForgeAccessor",
     "BotaniaGrassBlockForgeMixin",
-    "IDeathMessageProviderMixin"
+    "IDeathMessageProviderMixin",
+    "WorldPresetAccessor"
   ],
   "client": [
-    "client.ModelBakeryForgeAccessor",
     "client.ParticleEngineNeoForgeMixin"
   ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
   }
 }

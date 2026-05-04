@@ -26,6 +26,7 @@ import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.helper.ColorHelper;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.lib.BotaniaTags;
+import vazkii.botania.common.lib.ConventionalBotaniaTags;
 import vazkii.botania.data.util.DummyTagLookup;
 
 import java.util.Set;
@@ -120,10 +121,24 @@ public class ConventionalItemTagProvider extends ItemTagsProvider {
 		tag(ConventionalBotaniaTags.Items.MANA_DIAMOND_GEMS).add(BotaniaItems.manaDiamond);
 		tag(ConventionalBotaniaTags.Items.MANA_PEARL_GEMS).add(BotaniaItems.manaPearl);
 		tag(ConventionalBotaniaTags.Items.DRAGONSTONE_GEMS).add(BotaniaItems.dragonstone);
+		tag(ConventionalBotaniaTags.Items.BLAZE_QUARTZ_GEMS).add(BotaniaItems.blazeQuartz);
+		tag(ConventionalBotaniaTags.Items.DARK_QUARTZ_GEMS).add(BotaniaItems.darkQuartz);
+		tag(ConventionalBotaniaTags.Items.ELVEN_QUARTZ_GEMS).add(BotaniaItems.elfQuartz);
+		tag(ConventionalBotaniaTags.Items.LAVENDER_QUARTZ_GEMS).add(BotaniaItems.lavenderQuartz);
+		tag(ConventionalBotaniaTags.Items.MANA_QUARTZ_GEMS).add(BotaniaItems.manaQuartz);
+		tag(ConventionalBotaniaTags.Items.RED_QUARTZ_GEMS).add(BotaniaItems.redQuartz);
+		tag(ConventionalBotaniaTags.Items.SUNNY_QUARTZ_GEMS).add(BotaniaItems.sunnyQuartz);
 		tag(ConventionalItemTags.GEMS)
 				.addTag(ConventionalBotaniaTags.Items.MANA_DIAMOND_GEMS)
 				.addTag(ConventionalBotaniaTags.Items.MANA_PEARL_GEMS)
-				.addTag(ConventionalBotaniaTags.Items.DRAGONSTONE_GEMS);
+				.addTag(ConventionalBotaniaTags.Items.DRAGONSTONE_GEMS)
+				.addTag(ConventionalBotaniaTags.Items.BLAZE_QUARTZ_GEMS)
+				.addTag(ConventionalBotaniaTags.Items.DARK_QUARTZ_GEMS)
+				.addTag(ConventionalBotaniaTags.Items.ELVEN_QUARTZ_GEMS)
+				.addTag(ConventionalBotaniaTags.Items.LAVENDER_QUARTZ_GEMS)
+				.addTag(ConventionalBotaniaTags.Items.MANA_QUARTZ_GEMS)
+				.addTag(ConventionalBotaniaTags.Items.RED_QUARTZ_GEMS)
+				.addTag(ConventionalBotaniaTags.Items.SUNNY_QUARTZ_GEMS);
 
 		// Glass blocks and panes
 		copy(ConventionalBotaniaTags.Blocks.MANA_GLASS_BLOCKS, ConventionalBotaniaTags.Items.MANA_GLASS_BLOCKS);
@@ -218,7 +233,7 @@ public class ConventionalItemTagProvider extends ItemTagsProvider {
 		copy(ConventionalBlockTags.STRIPPED_WOODS, ConventionalItemTags.STRIPPED_WOODS);
 
 		tag(BotaniaTags.Items.LOONIUM_EXCLUDED)
-				.add(BotaniaItems.lexicon, BotaniaItems.overgrowthSeed, BotaniaItems.blackLotus, BotaniaItems.blackerLotus, Items.TRIAL_KEY, Items.OMINOUS_TRIAL_KEY)
+				.add(BotaniaItems.lexicon, BotaniaItems.blackLotus, BotaniaItems.blackerLotus, Items.TRIAL_KEY, Items.OMINOUS_TRIAL_KEY)
 				.addTag(ConventionalItemTags.MUSIC_DISCS);
 	}
 

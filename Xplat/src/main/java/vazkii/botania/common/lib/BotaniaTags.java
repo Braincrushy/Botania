@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.material.Fluid;
 
 import static vazkii.botania.api.BotaniaAPI.botaniaRL;
+import static vazkii.botania.api.BotaniaAPI.gogRL;
 
 public class BotaniaTags {
 	public static class Items {
@@ -44,6 +45,9 @@ public class BotaniaTags {
 		public static final TagKey<Item> FLOATING_FLOWERS = tag("floating_flowers");
 		public static final TagKey<Item> MUNDANE_FLOATING_FLOWERS = tag("mundane_floating_flowers");
 		public static final TagKey<Item> SPECIAL_FLOATING_FLOWERS = tag("special_floating_flowers");
+		public static final TagKey<Item> MISC_SPECIAL_FLOATING_FLOWERS = tag("misc_special_floating_flowers");
+		public static final TagKey<Item> FUNCTIONAL_SPECIAL_FLOATING_FLOWERS = tag("functional_special_floating_flowers");
+		public static final TagKey<Item> GENERATING_SPECIAL_FLOATING_FLOWERS = tag("generating_special_floating_flowers");
 
 		public static final TagKey<Item> LENS = tag("lens");
 
@@ -181,6 +185,9 @@ public class BotaniaTags {
 		public static final TagKey<Block> FLOATING_FLOWERS = tag("floating_flowers");
 		public static final TagKey<Block> MUNDANE_FLOATING_FLOWERS = tag("mundane_floating_flowers");
 		public static final TagKey<Block> SPECIAL_FLOATING_FLOWERS = tag("special_floating_flowers");
+		public static final TagKey<Block> MISC_SPECIAL_FLOATING_FLOWERS = tag("misc_special_floating_flowers");
+		public static final TagKey<Block> FUNCTIONAL_SPECIAL_FLOATING_FLOWERS = tag("functional_special_floating_flowers");
+		public static final TagKey<Block> GENERATING_SPECIAL_FLOATING_FLOWERS = tag("generating_special_floating_flowers");
 
 		/**
 		 * Blocks in this tag can be used in the Enchanter multiblock
@@ -335,6 +342,9 @@ public class BotaniaTags {
 		 */
 		public static final TagKey<Block> UNSUPPORTED_PLATFORM_DISGUISE = tag("unsupported_platform_disguise");
 
+		public static final TagKey<Block> GOG_PEBBLE_SOURCES =
+				TagKey.create(Registries.BLOCK, gogRL("pebble_sources"));
+
 		private static TagKey<Block> tag(String name) {
 			return TagKey.create(Registries.BLOCK, botaniaRL(name));
 		}
@@ -400,6 +410,13 @@ public class BotaniaTags {
 		public static final TagKey<Biome> MARIMORPHOSIS_PLAINS_BONUS = tag("marimorphosis_plains_bonus");
 		public static final TagKey<Biome> MARIMORPHOSIS_SWAMP_BONUS = tag("marimorphosis_swamp_bonus");
 		public static final TagKey<Biome> MARIMORPHOSIS_TAIGA_BONUS = tag("marimorphosis_taiga_bonus");
+
+		public static final TagKey<Biome> ORECHID_STONE_COPPER_BONUS = tag("orechid_stone_copper_bonus");
+		public static final TagKey<Biome> ORECHID_STONE_EMERALD_BONUS = tag("orechid_stone_emerald_bonus");
+		public static final TagKey<Biome> ORECHID_STONE_GOLD_BONUS = tag("orechid_stone_gold_bonus");
+
+		public static final TagKey<Biome> ORECHID_DEEPSLATE_COPPER_BONUS = tag("orechid_deepslate_copper_bonus");
+		public static final TagKey<Biome> ORECHID_DEEPSLATE_EMERALD_BONUS = tag("orechid_deepslate_emerald_bonus");
 
 		/**
 		 * Biomes in this tag are eligible for the mystical_flower placed_feature.

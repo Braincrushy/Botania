@@ -18,6 +18,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -29,9 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.block.*;
 import vazkii.botania.api.block.RedstoneSensitiveBlock;
-import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.common.annotations.SoftImplement;
-import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.block.block_entity.red_string.RedStringSpooferBlockEntity;
 import vazkii.botania.common.block.flower.FloatingSpecialFlowerBlock;
 import vazkii.botania.common.lib.BotaniaTags;
@@ -47,8 +46,6 @@ public abstract class SpecialFlowerBlockEntity extends BlockEntity implements Fl
 
 	private final FloatingFlower floatingData = new FloatingFlowerImpl();
 
-	/** true if this flower is working on Enchanted Soil **/
-	public boolean overgrowth = false;
 	@Nullable
 	private BlockPos positionOverride;
 	private boolean isFloating;
@@ -74,13 +71,7 @@ public abstract class SpecialFlowerBlockEntity extends BlockEntity implements Fl
 			self.isFloating = !self.isFloating;
 		}
 		BlockEntity tileBelow = level.getBlockEntity(worldPosition.below());
-		if (tileBelow instanceof RedStringSpooferBlockEntity relay) {
-			self.positionOverride = relay.getBinding();
-			self.overgrowth = false;
-		} else {
-			self.positionOverride = null;
-			self.overgrowth = self.isOvergrowthAffected() && self.isOnSpecialSoil();
-		}
+		self.positionOverride = tileBelow instanceof RedStringSpooferBlockEntity relay ? relay.getBinding() : null;
 
 		self.tickFlower();
 	}
@@ -115,18 +106,6 @@ public abstract class SpecialFlowerBlockEntity extends BlockEntity implements Fl
 		this.isFloating = floating;
 	}
 
-	public boolean isOnSpecialSoil() {
-		if (isFloating()) {
-			return false;
-		} else {
-			return level.getBlockState(worldPosition.below()).is(BotaniaBlocks.enchantedSoil);
-		}
-	}
-
-	public int getOvergrowthFactor() {
-		return overgrowth ? 2 : 1;
-	}
-
 	/**
 	 * @return Where this flower's effects are centered at. This can differ from the true TE location due to
 	 *         red string spoofers.
@@ -149,8 +128,7 @@ public abstract class SpecialFlowerBlockEntity extends BlockEntity implements Fl
 		if (interval <= 1) {
 			return true;
 		}
-		int relativeTick = (int) ((gameTime + cachedSeed) % interval);
-		return relativeTick == 0 || overgrowth && relativeTick == interval / 2;
+		return (int) ((gameTime + cachedSeed) % interval) == 0;
 	}
 
 	protected long getPositionSeed() {
@@ -212,7 +190,9 @@ public abstract class SpecialFlowerBlockEntity extends BlockEntity implements Fl
 	}
 
 	public void sync() {
-		VanillaPacketDispatcher.dispatchTEToNearbyPlayers(this);
+		if (level != null) {
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+		}
 	}
 
 	/**
@@ -235,13 +215,6 @@ public abstract class SpecialFlowerBlockEntity extends BlockEntity implements Fl
 	@Nullable
 	public RadiusDescriptor getSecondaryRadius() {
 		return null;
-	}
-
-	/**
-	 * Gets if this SubTileEntity is affected by Enchanted Soil's speed boost.
-	 */
-	public boolean isOvergrowthAffected() {
-		return true;
 	}
 
 	/**

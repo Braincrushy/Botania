@@ -27,6 +27,7 @@ import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -40,6 +41,7 @@ import vazkii.botania.api.internal.OptionallyColored;
 import vazkii.botania.api.state.BotaniaStateProperties;
 import vazkii.botania.api.state.enums.AlfheimPortalState;
 import vazkii.botania.common.block.block_entity.BotaniaBlockEntities;
+import vazkii.botania.common.block.block_entity.flower.generating.HydroangeasBlockEntity;
 import vazkii.botania.common.block.corporea.*;
 import vazkii.botania.common.block.dispenser.*;
 import vazkii.botania.common.block.flower.*;
@@ -49,10 +51,10 @@ import vazkii.botania.common.brew.BotaniaMobEffects;
 import vazkii.botania.common.helper.ColorHelper;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.item.block.ColoredBlockItem;
+import vazkii.botania.common.item.block.DecayableSpecialFlowerBlockItem;
 import vazkii.botania.common.item.block.SpecialFlowerBlockItem;
 import vazkii.botania.common.item.block.TinyPotatoBlockItem;
 import vazkii.botania.common.lib.LibBlockNames;
-import vazkii.botania.mixin.DispenserBlockAccessor;
 import vazkii.botania.xplat.XplatAbstractions;
 
 import java.util.LinkedHashMap;
@@ -742,7 +744,6 @@ public final class BotaniaBlocks {
 	public static final Block root = make(LibBlockNames.ROOT, new LivingRootBlock(BlockBehaviour.Properties.of().strength(1.2F).sound(SoundType.WOOD)));
 	public static final Block felPumpkin = make(LibBlockNames.FEL_PUMPKIN, new FelPumpkinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARVED_PUMPKIN)));
 	public static final Block cocoon = make(LibBlockNames.COCOON, new CocoonBlock(BlockBehaviour.Properties.of().strength(3, 60).sound(SoundType.WOOL)));
-	public static final Block enchantedSoil = make(LibBlockNames.ENCHANTED_SOIL, new EnchantedSoilBlock(BlockBehaviour.Properties.of().strength(0.6F).sound(SoundType.GRASS).mapColor(MapColor.GRASS)));
 	public static final Block animatedTorch = make(LibBlockNames.ANIMATED_TORCH, new AnimatedTorchBlock(BlockBehaviour.Properties.of().lightLevel(s -> 7).noOcclusion()));
 	public static final Block starfield = make(LibBlockNames.STARFIELD, new StarfieldCreatorBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.PINK).strength(5, 2000).sound(SoundType.METAL)));
 
@@ -1096,8 +1097,8 @@ public final class BotaniaBlocks {
 		r.accept(new SpecialFlowerBlockItem(manastar, props), BuiltInRegistries.BLOCK.getKey(manastar));
 		r.accept(new SpecialFlowerBlockItem(manastarFloating, props), BuiltInRegistries.BLOCK.getKey(manastarFloating));
 
-		r.accept(new SpecialFlowerBlockItem(hydroangeas, props), BuiltInRegistries.BLOCK.getKey(hydroangeas));
-		r.accept(new SpecialFlowerBlockItem(hydroangeasFloating, props), BuiltInRegistries.BLOCK.getKey(hydroangeasFloating));
+		r.accept(new DecayableSpecialFlowerBlockItem(hydroangeas, HydroangeasBlockEntity.DECAY_TIME, props), BuiltInRegistries.BLOCK.getKey(hydroangeas));
+		r.accept(new DecayableSpecialFlowerBlockItem(hydroangeasFloating, HydroangeasBlockEntity.DECAY_TIME, props), BuiltInRegistries.BLOCK.getKey(hydroangeasFloating));
 
 		r.accept(new SpecialFlowerBlockItem(endoflame, props), BuiltInRegistries.BLOCK.getKey(endoflame));
 		r.accept(new SpecialFlowerBlockItem(endoflameFloating, props), BuiltInRegistries.BLOCK.getKey(endoflameFloating));
@@ -1420,7 +1421,6 @@ public final class BotaniaBlocks {
 		r.accept(new BlockItem(root, props), BuiltInRegistries.BLOCK.getKey(root));
 		r.accept(new BlockItem(felPumpkin, props), BuiltInRegistries.BLOCK.getKey(felPumpkin));
 		r.accept(new BlockItem(cocoon, props), BuiltInRegistries.BLOCK.getKey(cocoon));
-		r.accept(new BlockItem(enchantedSoil, rareProps), BuiltInRegistries.BLOCK.getKey(enchantedSoil));
 		r.accept(new BlockItem(animatedTorch, props), BuiltInRegistries.BLOCK.getKey(animatedTorch));
 		r.accept(new BlockItem(starfield, props), BuiltInRegistries.BLOCK.getKey(starfield));
 		r.accept(new BlockItem(azulejo0, props), BuiltInRegistries.BLOCK.getKey(azulejo0));
@@ -1749,7 +1749,7 @@ public final class BotaniaBlocks {
 		DispenserBlock.registerBehavior(BotaniaItems.corporeaSparkMaster, behavior);
 		DispenserBlock.registerBehavior(BotaniaItems.corporeaSparkCreative, behavior);
 		DispenserBlock.registerBehavior(BotaniaItems.enderAirBottle, new ProjectileDispenseBehavior(BotaniaItems.enderAirBottle));
-		behavior = DispenserBlockAccessor.getDispenserRegistry().get(Items.GLASS_BOTTLE);
+		behavior = DispenserBlock.DISPENSER_REGISTRY.get(Items.GLASS_BOTTLE);
 		DispenserBlock.registerBehavior(Items.GLASS_BOTTLE, new EnderAirBottlingBehavior(behavior));
 
 		behavior = new GrassSeedsBehavior();
@@ -2122,5 +2122,15 @@ public final class BotaniaBlocks {
 
 		//noinspection unchecked
 		return (T) targetBlock;
+	}
+
+	@FunctionalInterface
+	public interface BCapConsumer<T> {
+		void accept(Function<BlockState, T> factory, Block... blocks);
+	}
+
+	@FunctionalInterface
+	public interface BCapFallbackConsumer<T> {
+		void accept(Function<BlockState, @Nullable T> factory);
 	}
 }
