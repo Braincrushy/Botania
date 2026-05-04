@@ -21,6 +21,21 @@ We cannot provide any ETA (even a rough one) due to the complexity of the work i
 of time the maintainers are able to spend on this effort.
 In the meantime, Botania for Minecraft 1.20.1 may still receive updates for bug fixes.
 
+* Fix: Hyacidus wasting mana on immune mobs that aren't undead
+* Fix: Various functional flowers never sent client updates when they used mana to perform their function
+* API: The `BlockProvider` interface now defines a method that lets others find out what the provider's "primary" block
+  is. This is meant to be used by implementers of features that don't look for one specific block type, but need to know
+  what's currently available.
+
+---
+
+{% include changelog_header.html version="1.20.1-452" %}
+
+* Fix: Random, potentially persistent crash in ManaSparkEntity.filterTransfers() after breaking the block a spark is attached to
+* Language updates:
+  * de_de updated with some missing translations
+  * Various minor structural fixes to several translation files
+
 ---
 
 {% include changelog_header.html version="1.20.1-451" %}
